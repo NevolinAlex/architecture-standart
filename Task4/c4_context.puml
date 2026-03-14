@@ -50,6 +50,10 @@ Rel(internetBank, abs, "Передаёт (проксирует) заявку о 
 
 Rel(abs, callCenterSystem, "Передаёт заявку о депозите в колл-центр", "Kafka")
 Rel(abs, telecom, "Передаёт СМС для отправки по заявке из интернет-банка")
+Rel(abs, telecom, "Передаёт СМС при (не)успешности загрузки файлов в кол-центры")
+Rel(abs, callCenterSystem, "Ежедневно передаёт информацию по депозитным ставкам", "SFTP")
+Rel(abs, partnerCallCenterSystem, "Ежедневно передаёт информацию по депозитным ставкам", "SFTP")
+
 
 
 ' Работа сотрудников фронт-офиса
@@ -57,6 +61,7 @@ Rel(frontOffice, abs, "Работает напрямую: операции по 
 
 ' Работа сотрудников бэк-офиса
 Rel(backOfficeDeposit, abs, "Обрабатывает заявки на депозиты, указывает ставки", "Desktop UI (Delphi)")
+Rel(backOfficeDeposit, abs, "Ежедневно (утром) загружает информацию по ставкам в систему", "Desktop UI (Delphi)")
 Rel(backOfficeCredit, abs, "Анализирует кредитный риск, рассчитывает ставки", "Desktop UI (Delphi)")
 
 ' Взаимодействие между подразделениями
@@ -65,6 +70,8 @@ Rel(backOfficeDeposit, backOfficeCredit, "Запрашивает анализ к
 Rel(frontOffice, backOfficeDeposit, "Запрашивает ставки депозитов для клиентов", "Email")
 Rel(backOfficeDeposit, frontOffice, "Передаёт рассчитанные ставки", "Email + Excel")
 Rel(backOfficeCredit, frontOffice, "Передаёт ставки кредитов", "Email + Excel")
+Rel(partnerCallCenter, backOfficeDeposit, "Передаёт информацию о не загрузке актуальных ежедневных ставок", "Email + Телефония")
+Rel(callCenterOp, backOfficeDeposit, "Передаёт информацию о не загрузке актуальных ежедневных ставок", "Email + Телефония")
 
 SHOW_LEGEND()
 @enduml

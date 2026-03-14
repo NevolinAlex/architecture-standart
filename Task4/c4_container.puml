@@ -21,8 +21,8 @@ System_Boundary(abs, "АБС (Автоматизированная банков�
 }
 
 System_Boundary(internetBank, "Интернет-банк", "Клиент-серверная система для проведения платежей и открытия текущих счетов. ASP.NET MVC 4.5 + MS SQL. Монолит на платформе подрядчика") {
-        Container(internet_bank_service, "Интернет-банк Приложение", "ASP.NET MVC 4.5", "Фронтенд и бэкенд для клиента.")
-        ContainerDb(internet_bank_db, "СУБД интернет банка", "Postgres", "Хранит заявки и статусы по депозитам")
+    Container(internet_bank_service, "Интернет-банк Приложение", "ASP.NET MVC 4.5", "Фронтенд и бэкенд для клиента.")
+    ContainerDb(internet_bank_db, "СУБД интернет банка", "Postgres", "Хранит заявки и статусы по депозитам")
 }
 
 System_Ext(callCenterSystem, "Система кол-центра", "CRM-платформа подрядчика для автоматизации работы кол-центра. React.js + Java Spring Boot + PostgreSQL. Микросервисная архитектура")
@@ -60,12 +60,23 @@ Rel(deposit_service, deposit_broker, "Читает заявки на созда�
 
 Rel(deposit_service, deposit_broker, "Передаёт заявку о депозите в колл-центр", "Kafka")
 Rel(deposit_service, deposit_broker, "Передаёт заявку о депозите в АБС", "Kafka")
+
 Rel(callCenterSystem, deposit_broker, "Получает заявки на депозит от сервиса депозитов", "Kafka")
 Rel(abs_service, deposit_broker, "Получает заявки на депозит от сервиса депозитов", "Kafka")
 
 Rel(deposit_service, telecom, "Передаёт СМС для отправки по заявке из интернет-банка")
 Rel(deposit_service, deposit_db, "Сохраняет информацию о заявках в БД", "JDBC")
 
+' Передача депозитных ставок
+Rel(backOfficeDeposit, abs_service, "Ежедневно (утром) загружает информацию по ставкам в систему", "Desktop UI (Delphi)")
+Rel(abs_service, deposit_broker, "Ежедневно передаёт информацию по ставкам в систему управления кредитами/депозитами", "Kafka")
+Rel(deposit_service, deposit_broker, "Читает файл с обновлёнными ставками по депозиту", "Kafka")
+Rel(deposit_service, callCenterSystem, "Передаёт информацию по депозитным ставкам", "SFTP")
+Rel(deposit_service, partnerCallCenterSystem, "Передаёт информацию по депозитным ставкам", "SFTP")
+Rel(deposit_service, telecom, "Передаёт СМС при (не)успешности загрузки файлов в кол-центры")
+Rel(deposit_service, deposit_db, "Сохраняет полученные от АБС файлы со ставками по депозитам и статус передачи файлов в кол-центры")
+Rel(partnerCallCenter, backOfficeDeposit, "Передаёт информацию о не загрузке актуальных ежедневных ставок", "Email + Телефония")
+Rel(callCenterOp, backOfficeDeposit, "Передаёт информацию о не загрузке актуальных ежедневных ставок", "Email + Телефония")
 
 
 ' Работа сотрудников фронт-офиса
