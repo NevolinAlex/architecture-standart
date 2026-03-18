@@ -3,95 +3,36 @@
 
 LAYOUT_WITH_LEGEND()
 
-title Диаграмма контекста банка "Стандарт" - все процессы
+title Загрузка ставок
 
-Person(client, "Клиент банка", "Физическое лицо, преимущественно старшего возраста, предпочитает офлайн-обслуживание")
-Person(frontOffice, "Сотрудник фронт-офиса", "Менеджер отделения банка, работает с посетителями, маркетинг и продажи (500 человек в 50 отделениях)")
-Person(backOfficeDeposit, "Менеджер депозитов", "Сотрудник бэк-офиса по депозитным продуктам (50 человек)")
-Person(backOfficeCredit, "Менеджер кредитов", "Сотрудник бэк-офиса по кредитным продуктам (50 человек)")
-Person(callCenterOp, "Оператор кол-центра", "Сотрудник внутреннего кол-центра банка (200 человек)")
-Person(partnerCallCenter, "Оператор партнёрского кол-центра", "Сотрудник внешнего партнёрского кол-центра (100 человек)")
+Person(backOfficeDeposit, "Менеджер депозитов", "Сотрудник бэк-офиса по депозитным продуктам")
+
 
 System_Boundary(abs, "АБС (Автоматизированная банковская система)", "Основная система учёта операций по счетам и бухгалтерия. Десктоп-клиент Delphi + Oracle DB (PL-SQL). Разработка внутри банка") {
     ContainerDb(abs_db, "СУБД АБС", "Oracle", "Хранит операции по счетам и бухгалтерию")
     Container(abs_service, "Сервис-монолит АБС", "Delphi", "АРМ бэк офиса и фронт офиса")
     ContainerDb(deposit_db, "СУБД заявок по депозитам ", "Postgres", "Хранит заявки и статусы по депозитам")
     Container(deposit_service, "Сервис управления депозитами", "Java + Spring Boot", "Обрабатывает заявка на открытие депозитов")
-    Container(deposit_broker, "Брокер очередей системы депозитов/кредитов", "Kafka", "Хранит информацию о заявках по депозитам для передачи между системами")
-}
-
-System_Boundary(internetBank, "Интернет-банк", "Клиент-серверная система для проведения платежей и открытия текущих счетов. ASP.NET MVC 4.5 + MS SQL. Монолит на платформе подрядчика") {
-    Container(internet_bank_service, "Интернет-банк Приложение", "ASP.NET MVC 4.5", "Фронтенд и бэкенд для клиента.")
-    ContainerDb(internet_bank_db, "СУБД интернет банка", "Postgres", "Хранит заявки и статусы по депозитам")
+    Container(deposit_broker, "Брокер очередей", "Kafka")
 }
 
 System_Ext(callCenterSystem, "Система кол-центра", "CRM-платформа подрядчика для автоматизации работы кол-центра. React.js + Java Spring Boot + PostgreSQL. Микросервисная архитектура")
 
 System_Ext(partnerCallCenterSystem, "Система партнёрского кол-центра", "Внешняя система партнёра для обработки звонков")
 
-System_Ext(website, "Сайт банка", "Маркетинговая информация о продуктах и услугах банка. PHP + React.js. Собственная разработка")
+System_Ext(store, "Сетевое файловое хранилище")
 
-System_Ext(smsGateway, "СМС-шлюз", "Шлюз телеком-оператора для отправки СМС-уведомлений")
+Rel(backOfficeDeposit, abs_service, "Ежедневно (утром) загружает информацию по депозитным ставкам в систему", "Desktop UI (Delphi)")
 
-System_Ext(telecom, "Телеком-оператор", "Внешний оператор связи для доставки СМС")
+Rel(abs_service, deposit_broker, "Загружает информацию по актуальным ставкам депозитов", "Kafka")
+Rel(deposit_service, deposit_broker, "Читает информацию по актуальным ставкам депозитов", "Kafka")
 
-' Взаимодействие клиентов с системами
-Rel(client, website, "Просматривает информацию о продуктах", "HTTPS")
-Rel(client, internet_bank_service, "Проводит платежи, открывает текущие счета/дебетовые карты", "HTTPS")
-Rel(client, callCenterOp, "Звонит для консультаций и заявок", "Телефония")
-Rel(client, partnerCallCenter, "Получает входящие звонки", "Телефония")
-Rel(client, frontOffice, "Посещает для всех банковских операций (депозиты, кредиты, счета)", "Личный визит")
+Rel(deposit_service, deposit_db, "Сохраняет информацию по ставкам в БД")
 
-' Работа операторов кол-центров
-Rel(callCenterOp, callCenterSystem, "Принимает звонки, заводит обращения")
-Rel(partnerCallCenter, partnerCallCenterSystem, "Работает по готовым скриптам")
+Rel(deposit_service, callCenterSystem, "Передаёт информацию по депозитным ставкам", "HTTP")
 
-' Интеграции систем
-Rel(callCenterSystem, abs_service, "Передаёт обращения и заявки клиентов")
-Rel(internet_bank_service, abs_service, "Интегрируется для проведения операций")
-Rel(abs_service, smsGateway, "Отправляет СМС-уведомления", "API")
-Rel(smsGateway, telecom, "Передаёт СМС для отправки")
-Rel(telecom, client, "Доставляет СМС-уведомления", "SMS")
-
-Rel(website, deposit_broker, "Передаёт (проксирует) заявку о депозите с сайта", "Kafka")
-Rel(internet_bank_service, deposit_broker, "Передаёт (проксирует) заявку о депозите из интернет-банка", "Kafka")
-
-Rel(deposit_service, deposit_broker, "Читает заявки на создание депозитов от сайта/интернет-банка", "Kafka")
-
-Rel(deposit_service, deposit_broker, "Передаёт заявку о депозите в колл-центр", "Kafka")
-Rel(deposit_service, deposit_broker, "Передаёт заявку о депозите в АБС", "Kafka")
-
-Rel(callCenterSystem, deposit_broker, "Получает заявки на депозит от сервиса депозитов", "Kafka")
-Rel(abs_service, deposit_broker, "Получает заявки на депозит от сервиса депозитов", "Kafka")
-
-Rel(deposit_service, telecom, "Передаёт СМС для отправки по заявке из интернет-банка")
-Rel(deposit_service, deposit_db, "Сохраняет информацию о заявках в БД", "JDBC")
-
-' Передача депозитных ставок
-Rel(backOfficeDeposit, abs_service, "Ежедневно (утром) загружает информацию по ставкам в систему", "Desktop UI (Delphi)")
-Rel(abs_service, deposit_broker, "Ежедневно передаёт информацию по ставкам в систему управления кредитами/депозитами", "Kafka")
-Rel(deposit_service, deposit_broker, "Читает файл с обновлёнными ставками по депозиту", "Kafka")
-Rel(deposit_service, callCenterSystem, "Передаёт информацию по депозитным ставкам", "SFTP")
-Rel(deposit_service, partnerCallCenterSystem, "Передаёт информацию по депозитным ставкам", "SFTP")
-Rel(deposit_service, telecom, "Передаёт СМС при (не)успешности загрузки файлов в кол-центры")
-Rel(deposit_service, deposit_db, "Сохраняет полученные от АБС файлы со ставками по депозитам и статус передачи файлов в кол-центры")
-Rel(partnerCallCenter, backOfficeDeposit, "Передаёт информацию о не загрузке актуальных ежедневных ставок", "Email + Телефония")
-Rel(callCenterOp, backOfficeDeposit, "Передаёт информацию о не загрузке актуальных ежедневных ставок", "Email + Телефония")
-
-
-' Работа сотрудников фронт-офиса
-Rel(frontOffice, abs_service, "Работает напрямую: операции по счетам, открытие депозитов/кредитов, загрузка документов", "Desktop UI (Delphi)")
-
-' Работа сотрудников бэк-офиса
-Rel(backOfficeDeposit, abs_service, "Обрабатывает заявки на депозиты, указывает ставки", "Desktop UI (Delphi)")
-Rel(backOfficeCredit, abs_service, "Анализирует кредитный риск, рассчитывает ставки", "Desktop UI (Delphi)")
-
-' Взаимодействие между подразделениями
-Rel(backOfficeCredit, backOfficeDeposit, "Передаёт данные по кредитному риску для расчёта ставок депозитов", "Email + Excel")
-Rel(backOfficeDeposit, backOfficeCredit, "Запрашивает анализ кредитного риска для клиентов", "Email")
-Rel(frontOffice, backOfficeDeposit, "Запрашивает ставки депозитов для клиентов", "Email")
-Rel(backOfficeDeposit, frontOffice, "Передаёт рассчитанные ставки", "Email + Excel")
-Rel(backOfficeCredit, frontOffice, "Передаёт ставки кредитов", "Email + Excel")
+Rel(deposit_service, store, "Загружает файла с актуальными ставками по депозитам")
+Rel(partnerCallCenterSystem, store, "Получает файл с актуальными ставками по депозитам")
 
 SHOW_LEGEND()
 @enduml

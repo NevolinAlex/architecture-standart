@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 YaBrowser/25.12.0.0 Safari/537.36" version="29.6.1" pages="2">
   <diagram id="1zcTAVt1k4KSup7FvAfL" name="Roadmap">
-    <mxGraphModel dx="5883" dy="3739" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+    <mxGraphModel dx="5731" dy="3657" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
       <root>
         <mxCell id="3D7FDG2aXA9G618_Kong-0" />
         <mxCell id="3D7FDG2aXA9G618_Kong-1" parent="3D7FDG2aXA9G618_Kong-0" />
@@ -18,9 +18,6 @@
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-8" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" value="АБС" vertex="1">
           <mxGeometry height="60" width="120" x="-2170" y="-1430" as="geometry" />
-        </mxCell>
-        <mxCell id="9gpmOMxf9NEkSpWO7wJK-9" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;" value="Q1" vertex="1">
-          <mxGeometry height="60" width="680" x="-2010" y="-1510" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-12" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Разработка функциональности загрузки ставок через UI" vertex="1">
           <mxGeometry height="60" width="140" x="-2010" y="-1430" as="geometry" />
@@ -50,28 +47,55 @@
           <mxGeometry height="60" width="120" x="-1810" y="-1110" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-21" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Комппексное тестирование и отладка" vertex="1">
-          <mxGeometry height="380" width="120" x="-1590" y="-1430" as="geometry" />
+          <mxGeometry height="380" width="120" x="-1435" y="-1430" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-23" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Развертывание новых компонентов и обновление существующих на контуре промышленной эксплуатации" vertex="1">
-          <mxGeometry height="380" width="120" x="-1450" y="-1430" as="geometry" />
-        </mxCell>
-        <mxCell id="9gpmOMxf9NEkSpWO7wJK-24" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;" value="Q2" vertex="1">
-          <mxGeometry height="60" width="660" x="-1290" y="-1510" as="geometry" />
+          <mxGeometry height="380" width="120" x="-1300" y="-1430" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-25" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Автоматический расчёт&amp;nbsp; и предоставления ставок по депозитам" vertex="1">
-          <mxGeometry height="60" width="160" x="-1290" y="-1430" as="geometry" />
+          <mxGeometry height="60" width="160" x="-1150" y="-1420" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-28" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Обработка файлов с актуальными ставками" vertex="1">
           <mxGeometry height="60" width="120" x="-1720" y="-1430" as="geometry" />
         </mxCell>
-        <mxCell id="9gpmOMxf9NEkSpWO7wJK-29" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Отключение функциональности загрузки ставок" vertex="1">
-          <mxGeometry height="60" width="160" x="-1120" y="-1430" as="geometry" />
+        <mxCell id="9gpmOMxf9NEkSpWO7wJK-29" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Отключение функциональности ручной загрузки ставок" vertex="1">
+          <mxGeometry height="60" width="160" x="-980" y="-1420" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-30" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Ведение процесса согласования ставки по заявке" vertex="1">
-          <mxGeometry height="60" width="160" x="-940" y="-1430" as="geometry" />
+          <mxGeometry height="60" width="160" x="-800" y="-1420" as="geometry" />
         </mxCell>
         <mxCell id="9gpmOMxf9NEkSpWO7wJK-31" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Обеспечение катастрофоустойчивости" vertex="1">
-          <mxGeometry height="60" width="140" x="-770" y="-1430" as="geometry" />
+          <mxGeometry height="60" width="140" x="-430" y="-1420" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-3" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;" value="Q1" vertex="1">
+          <mxGeometry height="60" width="410" x="-2010" y="-1510" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-4" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Обеспечение катастрофоустойчивости" vertex="1">
+          <mxGeometry height="60" width="140" x="-1150" y="-1200" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-5" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Обеспечение катастрофоустойчивости" vertex="1">
+          <mxGeometry height="60" width="140" x="-1000" y="-1120" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-6" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Настройка хранилища и организация доступа к нему" vertex="1">
+          <mxGeometry height="140" width="120" x="-1580" y="-1430" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-7" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Разработка WEB-интерфейса для менеджероов для обработки заявок на открыти депозитов" vertex="1">
+          <mxGeometry height="60" width="180" x="-630" y="-1420" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-12" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;" value="Q1" vertex="1">
+          <mxGeometry height="60" width="410" x="-1580" y="-1510" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-13" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;" value="Q1" vertex="1">
+          <mxGeometry height="60" width="430" x="-1150" y="-1510" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-14" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;" value="Q1" vertex="1">
+          <mxGeometry height="60" width="550" x="-710" y="-1510" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-15" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Обеспечение катастрофоустойчивости" vertex="1">
+          <mxGeometry height="60" width="140" x="-1150" y="-1270" as="geometry" />
+        </mxCell>
+        <mxCell id="b_tJ80XMi3PNkavaEfwM-16" parent="3D7FDG2aXA9G618_Kong-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" value="Развертывание новых компонентов и обновление существующих на контуре промышленной эксплуатации" vertex="1">
+          <mxGeometry height="380" width="120" x="-280" y="-1420" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
