@@ -1,0 +1,38 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Загрузка ставок
+
+Person(backOfficeDeposit, "Менеджер депозитов", "Сотрудник бэк-офиса по депозитным продуктам")
+
+
+System_Boundary(abs, "АБС (Автоматизированная банковская система)", "Основная система учёта операций по счетам и бухгалтерия. Десктоп-клиент Delphi + Oracle DB (PL-SQL). Разработка внутри банка") {
+    ContainerDb(abs_db, "СУБД АБС", "Oracle", "Хранит операции по счетам и бухгалтерию")
+    Container(abs_service, "Сервис-монолит АБС", "Delphi", "АРМ бэк офиса и фронт офиса")
+    ContainerDb(deposit_db, "СУБД заявок по депозитам ", "Postgres", "Хранит заявки и статусы по депозитам")
+    Container(deposit_service, "Сервис управления депозитами", "Java + Spring Boot", "Обрабатывает заявка на открытие депозитов")
+    Container(deposit_broker, "Брокер очередей", "Kafka")
+}
+
+System_Ext(callCenterSystem, "Система кол-центра", "CRM-платформа подрядчика для автоматизации работы кол-центра. React.js + Java Spring Boot + PostgreSQL. Микросервисная архитектура")
+
+System_Ext(partnerCallCenterSystem, "Система партнёрского кол-центра", "Внешняя система партнёра для обработки звонков")
+
+System_Ext(store, "Сетевое файловое хранилище")
+
+Rel(backOfficeDeposit, abs_service, "Ежедневно (утром) загружает информацию по депозитным ставкам в систему", "Desktop UI (Delphi)")
+
+Rel(abs_service, deposit_broker, "Загружает информацию по актуальным ставкам депозитов", "Kafka")
+Rel(deposit_service, deposit_broker, "Читает информацию по актуальным ставкам депозитов", "Kafka")
+
+Rel(deposit_service, deposit_db, "Сохраняет информацию по ставкам в БД")
+
+Rel(deposit_service, callCenterSystem, "Передаёт информацию по депозитным ставкам", "HTTP")
+
+Rel(deposit_service, store, "Загружает файла с актуальными ставками по депозитам")
+Rel(partnerCallCenterSystem, store, "Получает файл с актуальными ставками по депозитам")
+
+SHOW_LEGEND()
+@enduml

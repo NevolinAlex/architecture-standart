@@ -1,0 +1,61 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Открытие депозитов
+
+Person(client, "Клиент банка", "Физическое лицо, преимущественно старшего возраста, предпочитает офлайн-обслуживание")
+Person(backOfficeDeposit, "Менеджер депозитов", "Сотрудник бэк-офиса по депозитным продуктам (50 человек)")
+Person(callCenterOp, "Оператор кол-центра", "Сотрудник внутреннего кол-центра банка (200 человек)")
+
+System_Boundary(abs, "АБС (Автоматизированная банковская система)", "Основная система учёта операций по счетам и бухгалтерия. Десктоп-клиент Delphi + Oracle DB (PL-SQL). Разработка внутри банка") {
+    ContainerDb(abs_db, "СУБД АБС", "Oracle", "Хранит операции по счетам и бухгалтерию")
+    Container(abs_service, "Сервис-монолит АБС", "Delphi", "АРМ бэк офиса и фронт офиса")
+    ContainerDb(deposit_db, "СУБД депозитов", "Postgres", "Хранит актуальные ставки по депозитам")
+    Container(deposit_service, "Сервис управления депозитами", "Java + Spring Boot", "Обрабатывает заявка на открытие депозитов")
+    Container(deposit_broker, "Брокер очередей", "Kafka")
+}
+
+System_Boundary(internetBank, "Интернет-банк", "Клиент-серверная система для проведения платежей и открытия текущих счетов. ASP.NET MVC 4.5 + MS SQL. Монолит на платформе подрядчика") {
+        Container(internet_bank_service, "Интернет-банк Приложение", "ASP.NET MVC 4.5", "Фронтенд и бэкенд для клиента.")
+        ContainerDb(internet_bank_db, "СУБД интернет банка", "Postgres", "Хранит заявки и статусы по депозитам")
+}
+
+System(callCenterSystem, "Система кол-центра", "CRM-платформа подрядчика для автоматизации работы кол-центра. React.js + Java Spring Boot + PostgreSQL. Микросервисная архитектура")
+
+System(website, "Сайт банка", "Маркетинговая информация о продуктах и услугах банка. PHP + React.js. Собственная разработка")
+
+System_Ext(smsGateway, "СМС-шлюз", "Шлюз телеком-оператора для отправки СМС-уведомлений")
+
+Rel(smsGateway, client, "Доставляет СМС-уведомление с предложением на открытие депозита из интернет-банка", "SMS")
+Rel(client, website, "Просматривает актуальные депозитные ставки. Подаёт заявку на открытие депозита")
+Rel(client, internet_bank_service, "Просматривает персонализированные депозитные ставки; подтверждает заявку на открытие депозита и подтверждает заявку кодом из СМС")
+
+
+Rel(website, deposit_service, "Передаёт заявку о депозите с сайта", "HTTP")
+Rel(internet_bank_service, deposit_service, "Передаёт заявку о депозите из интернет-банка", "HTTP")
+Rel(internet_bank_service, deposit_service, "Получение актуальных депозитных ставок", "HTTP")
+Rel(website, deposit_service, "Получение актуальных депозитных ставок", "HTTP")
+
+Rel(deposit_service, deposit_broker, "Передаёт заявку о депозите в колл-центр", "Kafka")
+Rel(deposit_service, deposit_broker, "Передаёт заявку о депозите в АБС", "Kafka")
+Rel(callCenterSystem, deposit_broker, "Получает заявки на депозит от сервиса депозитов", "Kafka")
+Rel(abs_service, deposit_broker, "Получает заявки на депозит от сервиса депозитов", "Kafka")
+Rel(abs_service, deposit_service, "Передаёт актуальные ставки по депозитам в сервис депозитов", "HTTP")
+Rel(abs_service, abs_db, "Сохраняет заявку на открытие депозита ", "Kafka")
+
+Rel(abs_service, smsGateway, "Передаёт СМС для отправки по заявке на открытие депозита из интернет-банка")
+Rel(deposit_service, smsGateway, "Передаёт СМС для подтверждения заявки на открытие депозита с сайта")
+
+Rel(deposit_service, deposit_db, "Сохраняет информацию о заявках; получает актуальные ставки по депозитам", "JDBC")
+
+' Работа сотрудников бэк-офиса
+Rel(backOfficeDeposit, abs_service, "Обрабатывает заявку на открытие депозита, указывает ставку, направляет СМС с информацией клиенту")
+Rel(backOfficeDeposit, abs_service, "Ежедневно загружает ставки по депозитам в АБС")
+
+Rel(callCenterSystem, callCenterOp, "Назначает заявку на открытие депозита менеджеру")
+Rel(callCenterOp, client, "Связывается с клиентом для предложений условий по открытию депозита ")
+
+SHOW_LEGEND()
+@enduml

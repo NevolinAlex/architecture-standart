@@ -1,0 +1,29 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Загрузка ставок
+
+
+
+Person(backOfficeDeposit, "Менеджер депозитов", "Сотрудник бэк-офиса по депозитным продуктам")
+
+System_Ext(store, "Сетевое файловое хранилище")
+
+System(callCenterSystem, "Система кол-центра", "CRM-платформа подрядчика для автоматизации работы кол-центра. React.js + Java Spring Boot + PostgreSQL. Микросервисная архитектура")
+
+System_Ext(partnerCallCenterSystem, "Система партнёрского кол-центра", "Внешняя система партнёра для обработки звонков")
+
+System(abs, "АБС (Автоматизированная банковская система)", "Основная система учёта операций по счетам и бухгалтерия. Десктоп-клиент Delphi + Oracle DB (PL-SQL). Разработка внутри банка")
+
+
+Rel(backOfficeDeposit, abs, "Ежедневно (утром) загружает информацию по депозитным ставкам в систему", "Desktop UI (Delphi)")
+Rel(abs, callCenterSystem, "Передаёт информацию по депозитным ставкам", "Kafka")
+
+Rel(abs, store, "Загружает файла с актуальными ставками по депозитам")
+Rel(partnerCallCenterSystem, store, "Получает файл с актуальными ставками по депозитам")
+
+
+SHOW_LEGEND()
+@enduml
